@@ -1,0 +1,96 @@
+﻿;/*++
+;
+;Copyright (c) Microsoft Corporation All rights Reserved
+;
+;Module Name:
+;
+;    vihidmini.inf
+;
+;Abstract:
+;    INF file for installing HID minidriver (KMDF version)
+;
+;Installation Notes:
+;    Using Devcon: Type "devcon install vhidmini.inf root\vhidmini" to install
+;
+;--*/
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGuid={745A17A0-74D3-11D0-B6FE-00A0C90F57DA}
+Provider=%ManufacturerName%
+DriverVer = 03/10/2024,0.37.9.496
+CatalogFile=fts9cu80f.cat
+
+; ================= Device section =====================
+
+[Manufacturer]
+%ManufacturerName%=Microsoft,NTARM64
+
+; Works on Win7 and later because we use inbox HID-KMDF mapper
+[Microsoft.NTARM64]
+%DeviceDesc%=fts9cu80f, ACPI\FTS9CU80F
+
+[fts9cu80f.NT]
+CopyFiles=KMDriverCopy
+
+[fts9cu80f.NT.hw]
+AddReg=fts9cu80f_AddReg
+
+[fts9cu80fa.NT.Services]
+AddService=fts9cu80f,0,fts9cu80f_Service_Inst,
+AddService=mshidkmdf,0x00000002,mshidkmdf_Service_Inst ;flag 0x2 sets this as the service for the device
+
+[fts9cu80f_AddReg]
+HKR,,"LowerFilters",0x00010008,"fts9cu80f" ; FLG_ADDREG_TYPE_MULTI_SZ | FLG_ADDREG_APPEND
+HKR,,"XRevert",0x00010001,0
+HKR,,"YRevert",0x00010001,0
+HKR,,"XYExchange",0x00010001,0
+HKR,,"XMin",0x00010001,0
+HKR,,"XMax",0x00010001,2208
+HKR,,"YMin",0x00010001,0
+HKR,,"YMax",0x00010001,1768
+
+[mshidkmdf_Service_Inst]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\mshidkmdf.sys
+
+[fts9cu80f_Service_Inst]
+DisplayName    = %ServiceDesc%
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\fts9cu80f.sys
+
+[fts9cu80f.NT.Wdf]
+KmdfService=fts9cu80f, fts9cu80f_wdfsect
+
+[fts9cu80f_wdfsect]
+KmdfLibraryVersion=1.15
+
+; ================= copy files =====================
+
+[KMDriverCopy]
+fts9cu80f.sys
+fts9cu80f_q2.bin
+fts9cu80f_q2_old.bin
+
+[SourceDisksNames]
+1=%DiskDesc%,,,
+
+[SourceDisksFiles]
+fts9cu80f.sys=1
+fts9cu80f_q2.bin=1
+fts9cu80f_q2_old.bin=1
+
+[DestinationDirs]
+KMDriverCopy=12
+
+;---------------------------------------------------------------;
+
+[Strings]
+ManufacturerName   = "Xzy-Qzy6750 authors"
+DeviceDesc         = "FTS9CU80F Touchscreen Controller Device"
+ServiceDesc        = "FTS9CU80F Touchscreen Controller Service"
+DiskDesc           = "FTS9CU80F Touchscreen Controller Installation Disk"
