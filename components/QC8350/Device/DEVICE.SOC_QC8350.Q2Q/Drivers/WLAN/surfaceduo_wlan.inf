@@ -1,4 +1,4 @@
-﻿;-------------------------------------------------------------------------------
+ ;-------------------------------------------------------------------------------
 ; QCWLAN8350.INF
 ;
 ; Qualcomm Wireless LAN NDIS Miniport Adapter
@@ -98,7 +98,10 @@ AddInterface=%wlanInterfaceGuid%,,QcWlan.I.addPath
 AddReg=QcWlan.addPath.AddReg
 
 [QcWlan.addPath.AddReg]
-HKR,,Local,,%13%\WLANMDSP.MBN
+HKR,,Local,,%13%\bdwlan.elf
+bdwlan.elf1 
+bdwlan.elf10 
+bdwlan.elf2 
 
 ;-----------------------------------------------------------------------------
 ; Wireless Local Area Network Adaptor Common
@@ -122,11 +125,15 @@ HKR, Ndi,            Service,    0, %QcWlan.Service.Name%
 
 [SourceDisksFiles]
 
-wlanmdsp.mbn = 1,
-
-
-data.msc = 1,
-bdwlan.bin = 1,
+bdwlan.elf = 1,
+bdwlan.elf1 = 1,
+bdwlan.elf10 = 1,
+bdwlan.elf2 = 1,
+Data.msc = 1,
+Data20.msc = 1,
+amss20.bin = 1,
+m3.bin = 1,
+regdb.bin = 1,
 
 qcwlan8350.sys=1
 
@@ -146,13 +153,19 @@ qcwlan8350.sys,,,2
 
 [WlanFWFiles]
 
-wlanmdsp.mbn
+bdwlan.elf 
+bdwlan.elf1 
+bdwlan.elf10 
+bdwlan.elf2 
 
 
 [bdwlanFiles]
 
-data.msc
-bdwlan.bin
+Data.msc 
+Data20.msc 
+amss20.bin 
+m3.bin 
+regdb.bin 
 
 
 
